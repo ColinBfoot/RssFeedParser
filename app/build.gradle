@@ -1,0 +1,81 @@
+apply plugin: 'com.android.application'
+
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
+
+android {
+    compileSdkVersion 26
+    defaultConfig {
+        applicationId "com.sas.rssfeedparser"
+        minSdkVersion 19
+        targetSdkVersion 26
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+    dataBinding {
+        enabled = true
+    }
+    compileOptions {
+        targetCompatibility 1.8
+        sourceCompatibility 1.8
+    }
+}
+
+ext {
+    support = '26.1.0'
+    constraint = '1.0.2'
+    arch = '1.1.0'
+
+    okhttp = '3.6.0'
+    retrofit = '2.1.0'
+    converter_xml = '2.0.0'
+    dagger_version = "2.13"
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
+    kapt "com.android.databinding:compiler:$android_plugin_version"
+
+    implementation "com.android.support:appcompat-v7:$support"
+    implementation "com.android.support.constraint:constraint-layout:$constraint"
+    implementation "com.android.support:design:$support"
+
+    compile "android.arch.lifecycle:runtime:$arch"
+    compile "android.arch.lifecycle:extensions:$arch"
+    kapt "android.arch.lifecycle:compiler:$arch"
+
+    compile "com.google.dagger:dagger:$dagger_version"
+    compile "com.google.dagger:dagger-android:$dagger_version"
+    compile "com.google.dagger:dagger-android-support:$dagger_version"
+
+    kapt "com.google.dagger:dagger-compiler:$dagger_version"
+    kapt "com.google.dagger:dagger-android-processor:$dagger_version"
+    kapt "com.google.dagger:dagger-compiler:$dagger_version"
+
+    compile 'com.squareup.picasso:picasso:2.5.2'
+    compile "com.squareup.okhttp3:okhttp:$okhttp"
+    compile "com.squareup.okhttp3:logging-interceptor:$okhttp"
+    compile "com.squareup.retrofit2:retrofit:$retrofit"
+    compile("com.squareup.retrofit2:converter-simplexml:$converter_xml") {
+        exclude group: 'xpp3', module: 'xpp3'
+        exclude group: 'stax', module: 'stax-api'
+        exclude group: 'stax', module: 'stax'
+    }
+
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'com.android.support.test:runner:1.0.1'
+    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
+}
+
+kapt {
+    generateStubs = true
+}
