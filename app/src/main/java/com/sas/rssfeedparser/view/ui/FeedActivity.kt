@@ -1,7 +1,5 @@
 package com.sas.rssfeedparser.view.ui
 
-import android.content.Context
-import android.net.ConnectivityManager
 import android.os.Build
 import android.os.Bundle
 import android.support.v4.app.Fragment
@@ -9,6 +7,7 @@ import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
 import android.view.Window
 import com.sas.rssfeedparser.R
+import com.sas.rssfeedparser.util.Util
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.support.HasSupportFragmentInjector
 import javax.inject.Inject
@@ -38,15 +37,8 @@ class FeedActivity : AppCompatActivity(), HasSupportFragmentInjector {
     }
 
     private fun checkforInternetConnection() {
-
-        val cm = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-
-        val activeNetwork = cm.activeNetworkInfo
-        val isConnected = activeNetwork != null && activeNetwork.isConnectedOrConnecting
-
-        if (!isConnected) {
+        if (!Util.isConnected(this))
             showConnectionAlertDialog()
-        }
     }
 
     private fun showConnectionAlertDialog() {
@@ -60,7 +52,6 @@ class FeedActivity : AppCompatActivity(), HasSupportFragmentInjector {
                 .setMessage(R.string.connection_dialog_message)
                 .setPositiveButton(android.R.string.ok, { dialog, _ ->
                     dialog.dismiss()
-                    //finish()
                 }).create()
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
         dialog.show()

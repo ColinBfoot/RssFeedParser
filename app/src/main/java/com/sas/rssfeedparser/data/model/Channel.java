@@ -15,11 +15,10 @@ import java.util.List;
 })
 @Root(strict = false)
 public class Channel {
-    // Tricky part in Simple XML because the link is named twice
     @ElementList(entry = "link", inline = true, required = false)
     public List<Link> links;
 
-    @ElementList(name = "item", required = true, inline = true)
+    @ElementList(name = "item", inline = true)
     public List<Item> itemList;
 
 
@@ -63,14 +62,12 @@ public class Channel {
     @Root(name = "item", strict = false)
     public static class Item {
 
-        @Element(name = "title", required = true)
-        public String title;//The title of the item.	Venice Film Festival Tries to Quit Sinking
-        @Element(name = "link", required = true)
-        public String link;//The URL of the item.	http://www.nytimes.com/2002/09/07/movies/07FEST.html
-        @Element(name = "description", required = true)
-        public String description;//The item synopsis.	Some of the most heated chatter at the Venice Film Festival this week was about the way that the arrival of the stars at the Palazzo del Cinema was being staged.
+        @Element(name = "title")
+        public String title;
+        @Element(name = "link")
+        public String link;
         @Element(name = "guid", required = false)
-        public String guid;//A string that uniquely identifies the item. More.	<guid isPermaLink="true">http://inessential.com/2002/09/01.php#a2</guid>
+        public String guid;
         @Element(name = "pubDate", required = false)
         public String pubDate;
         @Element(name = "thumbnail", required = false)
@@ -83,7 +80,6 @@ public class Channel {
             return "Item{" +
                     "title='" + title + '\'' +
                     ", link='" + link + '\'' +
-                    ", description='" + description + '\'' +
                     ", guid='" + guid + '\'' +
                     ", pubDate='" + pubDate + '\'' +
                     ", thumbnail='" + thumbnail + '\'' +

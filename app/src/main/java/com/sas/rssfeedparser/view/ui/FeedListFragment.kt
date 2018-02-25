@@ -7,9 +7,7 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.support.v4.app.Fragment
-import android.support.v4.content.ContextCompat
 import android.support.v4.widget.ContentLoadingProgressBar
-import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
@@ -54,21 +52,16 @@ class FeedListFragment : Fragment(), FeedItemClickCallback, Injectable {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        var view = inflater.inflate(R.layout.fragment_feed, container, false)
+        val view = inflater.inflate(R.layout.fragment_feed, container, false)
 
         mRecyclerView = view.rv_feed_list
         mLoadingProgressBar = view.pb_feeds_loading
         mEmptyText = view.tv_empty_text
 
-        var layoutManager = LinearLayoutManager(context)
+        val layoutManager = LinearLayoutManager(context)
         layoutManager.orientation = LinearLayoutManager.VERTICAL
 
         mRecyclerView.layoutManager = layoutManager
-
-        var decoration = DividerItemDecoration(mRecyclerView.context, layoutManager.orientation)
-        decoration.setDrawable(ContextCompat.getDrawable(activity, R.drawable.horizontal_divider))
-
-        mRecyclerView.addItemDecoration(decoration)
 
         mFeedItemAdapter = FeedItemAdapter(this)
         mRecyclerView.adapter = mFeedItemAdapter
@@ -85,20 +78,18 @@ class FeedListFragment : Fragment(), FeedItemClickCallback, Injectable {
             if (rss != null) {
                 mFeedItemAdapter.setFeedItems(rss.channel.itemList)
                 showEmptyText(false)
-            }
-            else{
+            } else {
                 showEmptyText(true)
             }
         })
     }
 
-    private fun showEmptyText(showEmpty: Boolean){
-        if(showEmpty){
+    private fun showEmptyText(showEmpty: Boolean) {
+        if (showEmpty) {
             mEmptyText.visibility = VISIBLE
             mRecyclerView.visibility = GONE
             mLoadingProgressBar.visibility = GONE
-        }
-        else{
+        } else {
             mRecyclerView.visibility = VISIBLE
             mEmptyText.visibility = GONE
             mLoadingProgressBar.visibility = GONE
@@ -111,7 +102,7 @@ class FeedListFragment : Fragment(), FeedItemClickCallback, Injectable {
 
     private fun launchLink(linkUri: Uri) {
         val intent = Intent(Intent.ACTION_VIEW, linkUri)
-        if (intent.resolveActivity(activity.packageManager) != null) {
+        if (intent.resolveActivity(activity!!.packageManager) != null) {
             startActivity(intent)
         } else {
             Toast.makeText(context, "No app found to open this URL.", LENGTH_SHORT).show()
@@ -125,7 +116,7 @@ class FeedListFragment : Fragment(), FeedItemClickCallback, Injectable {
     private fun playMedia(mediaUri: Uri, type: String) {
         val intent = Intent(Intent.ACTION_VIEW)
         intent.setDataAndType(mediaUri, type)
-        if (intent.resolveActivity(activity.packageManager) != null) {
+        if (intent.resolveActivity(activity!!.packageManager) != null) {
             startActivity(intent)
         } else {
             Toast.makeText(context, "No audio player apps found.", LENGTH_SHORT).show()

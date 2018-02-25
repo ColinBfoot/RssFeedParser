@@ -14,19 +14,19 @@ import javax.inject.Singleton;
 
 @Singleton
 public class FeedItemViewModelFactory implements ViewModelProvider.Factory {
-    private final ArrayMap<Class, Callable<? extends ViewModel>> creators;
+    private final ArrayMap<Class<FeedItemListViewModel>, Callable<? extends ViewModel>> creators;
 
     @Inject
     public FeedItemViewModelFactory(ViewModelSubComponent viewModelSubComponent) {
         creators = new ArrayMap<>();
-        creators.put(FeedItemListViewModel.class, () -> viewModelSubComponent.feedItemListViewModel());
+        creators.put(FeedItemListViewModel.class, viewModelSubComponent::feedItemListViewModel);
     }
 
     @Override
     public <T extends ViewModel> T create(Class<T> modelClass) {
         Callable<? extends ViewModel> creator = creators.get(modelClass);
         if (creator == null) {
-            for (Map.Entry<Class, Callable<? extends ViewModel>> entry : creators.entrySet()) {
+            for (Map.Entry<Class<FeedItemListViewModel>, Callable<? extends ViewModel>> entry : creators.entrySet()) {
                 if (modelClass.isAssignableFrom(entry.getKey())) {
                     creator = entry.getValue();
                     break;

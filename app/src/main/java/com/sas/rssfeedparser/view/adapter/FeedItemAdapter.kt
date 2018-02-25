@@ -5,18 +5,21 @@ import android.databinding.DataBindingUtil
 import android.support.v7.util.DiffUtil
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
-
+import android.view.animation.DecelerateInterpolator
 import com.sas.rssfeedparser.R
 import com.sas.rssfeedparser.data.model.Channel
 import com.sas.rssfeedparser.databinding.FeedItemBinding
-import com.sas.rssfeedparser.view.callback.FeedItemClickCallback
-import android.view.animation.DecelerateInterpolator
-import android.view.View
 import com.sas.rssfeedparser.util.ViewUtils
+import com.sas.rssfeedparser.view.callback.FeedItemClickCallback
 
 
 class FeedItemAdapter(private val feedItemClickCallback: FeedItemClickCallback?) : RecyclerView.Adapter<FeedItemAdapter.FeedItemViewHolder>() {
+
+    companion object {
+        const val ANIMATED_ITEMS_COUNT = 10
+    }
 
     private var mFeedList: List<Channel.Item>? = null
     private var lastAnimatedPosition: Int = -1
@@ -51,9 +54,9 @@ class FeedItemAdapter(private val feedItemClickCallback: FeedItemClickCallback?)
     }
 
     private fun runSlideInAnimation(view: View, position: Int) {
-//        if (!animateItems || position >= ANIMATED_ITEMS_COUNT - 1) {
-//            return
-//        }
+        if (position >= ANIMATED_ITEMS_COUNT - 1) {
+            return
+        }
 
         if (position > lastAnimatedPosition) {
             lastAnimatedPosition = position
