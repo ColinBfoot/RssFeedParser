@@ -4,5 +4,6 @@
     <string name="connection_dialog_message">A working internet connection is required for this app. Please check your connection and try again.</string>
     <string name="feeds_empty_text">No feed items to show.</string>
 
-    <string name="play_button_content_description">Play button to launch audio player</string>
+    <string name="feed_play_button_content_description">Play button to launch audio player</string>
+    <string name="feed_thumbnail_content_description">Thumbnail image from RSS feed</string>
 </resources>

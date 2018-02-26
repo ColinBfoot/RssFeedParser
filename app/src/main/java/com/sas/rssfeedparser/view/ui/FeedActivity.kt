@@ -18,7 +18,7 @@ class FeedActivity : AppCompatActivity(), HasSupportFragmentInjector {
     @Inject
     lateinit var dispatchingAndroidInjector: DispatchingAndroidInjector<Fragment>
 
-    lateinit var mFragment: FeedListFragment
+    private lateinit var mFragment: FeedListFragment
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

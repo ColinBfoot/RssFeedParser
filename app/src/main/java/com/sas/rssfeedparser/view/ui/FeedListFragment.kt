@@ -40,7 +40,7 @@ class FeedListFragment : Fragment(), FeedItemClickCallback, Injectable {
     private lateinit var mLoadingProgressBar: ContentLoadingProgressBar
     private lateinit var mEmptyText: TextView
 
-    lateinit var mViewModel: FeedItemListViewModel
+    private lateinit var mViewModel: FeedItemListViewModel
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
@@ -130,7 +130,7 @@ class FeedListFragment : Fragment(), FeedItemClickCallback, Injectable {
         }
     }
 
-    protected fun loadSwipeToRefresh(view: View) {
+    private fun loadSwipeToRefresh(view: View) {
         mFeedSwipeRefresh = view.srl_feed_refresh
         mFeedSwipeRefresh.setOnRefreshListener(SwipeRefreshLayout.OnRefreshListener { mViewModel.updateFeedItems() })
     }

@@ -12,7 +12,7 @@ import javax.inject.Inject
  */
 
 class FeedItemListViewModel @Inject
-constructor(var feedItemRepository: FeedItemRepository, app: Application) : AndroidViewModel(app) {
+constructor(private var feedItemRepository: FeedItemRepository, app: Application) : AndroidViewModel(app) {
 
     companion object {
         const val FEED_URL = "http://feeds.feedburner.com/blogspot/AndroidDevelopersBackstage?format=xml"

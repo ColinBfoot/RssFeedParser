@@ -13,13 +13,13 @@ import org.junit.runners.JUnit4
 @RunWith(JUnit4::class)
 class FeedUtilTest {
 
-    lateinit var feedItems: ArrayList<Channel.Item>
+    private lateinit var feedItems: ArrayList<Channel.Item>
 
     @Before
     fun feedItemSetup() {
         feedItems = ArrayList<Channel.Item>()
 
-        var testItem1: Channel.Item = Channel.Item()
+        val testItem1: Channel.Item = Channel.Item()
         testItem1.title = "Test title 1"
         testItem1.link = "http://testlink1.com"
         testItem1.guid = "abcdef"
@@ -27,7 +27,7 @@ class FeedUtilTest {
 
         feedItems.add(testItem1)
 
-        var testItem2: Channel.Item = Channel.Item()
+        val testItem2: Channel.Item = Channel.Item()
         testItem2.title = "Test title 2"
         testItem2.link = "http://testlink2.com"
         testItem2.guid = "abcdef"
@@ -35,7 +35,7 @@ class FeedUtilTest {
 
         feedItems.add(testItem2)
 
-        var testItem3: Channel.Item = Channel.Item()
+        val testItem3: Channel.Item = Channel.Item()
         testItem3.title = "Test title 1"
         testItem3.link = "http://testlink1.com"
         testItem3.guid = "ghijkl"

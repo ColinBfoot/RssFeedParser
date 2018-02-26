@@ -2,6 +2,7 @@ package com.sas.rssfeedparser.viewmodel;
 
 import android.arch.lifecycle.ViewModel;
 import android.arch.lifecycle.ViewModelProvider;
+import android.support.annotation.NonNull;
 import android.support.v4.util.ArrayMap;
 
 import com.sas.rssfeedparser.di.ViewModelSubComponent;
@@ -22,8 +23,9 @@ public class FeedItemViewModelFactory implements ViewModelProvider.Factory {
         creators.put(FeedItemListViewModel.class, viewModelSubComponent::feedItemListViewModel);
     }
 
+    @NonNull
     @Override
-    public <T extends ViewModel> T create(Class<T> modelClass) {
+    public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
         Callable<? extends ViewModel> creator = creators.get(modelClass);
         if (creator == null) {
             for (Map.Entry<Class<FeedItemListViewModel>, Callable<? extends ViewModel>> entry : creators.entrySet()) {
