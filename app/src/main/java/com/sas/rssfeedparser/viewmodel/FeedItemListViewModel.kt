@@ -2,8 +2,8 @@ package com.sas.rssfeedparser.viewmodel
 
 import android.app.Application
 import android.arch.lifecycle.AndroidViewModel
-import android.arch.lifecycle.LiveData
-import com.sas.rssfeedparser.data.model.RSS
+import android.arch.lifecycle.MutableLiveData
+import com.sas.rssfeedparser.data.model.Channel
 import com.sas.rssfeedparser.data.services.FeedItemRepository
 import javax.inject.Inject
 
@@ -12,12 +12,20 @@ import javax.inject.Inject
  */
 
 class FeedItemListViewModel @Inject
-constructor(feedItemRepository: FeedItemRepository, app: Application) : AndroidViewModel(app) {
+constructor(var feedItemRepository: FeedItemRepository, app: Application) : AndroidViewModel(app) {
 
     companion object {
         const val FEED_URL = "http://feeds.feedburner.com/blogspot/AndroidDevelopersBackstage?format=xml"
     }
 
-    val feedItemListObservable: LiveData<RSS> = feedItemRepository.getFeed(FEED_URL)
+    val feedItemListObservable: MutableLiveData<List<Channel.Item>> = feedItemRepository.getFeed(FEED_URL)
+
+    fun updateFeedItems() {
+        feedItemRepository.updateFeed(FEED_URL, feedItemListObservable)
+    }
+
+    fun loadFeedItemsForSearchString(searchString: String) {
+        feedItemRepository.updateFeedWithSearchString(FEED_URL, searchString, feedItemListObservable)
+    }
 
 }

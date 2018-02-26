@@ -11,6 +11,7 @@ import android.view.animation.DecelerateInterpolator
 import com.sas.rssfeedparser.R
 import com.sas.rssfeedparser.data.model.Channel
 import com.sas.rssfeedparser.databinding.FeedItemBinding
+import com.sas.rssfeedparser.util.FeedUtil
 import com.sas.rssfeedparser.util.ViewUtils
 import com.sas.rssfeedparser.view.callback.FeedItemClickCallback
 
@@ -27,11 +28,11 @@ class FeedItemAdapter(private val feedItemClickCallback: FeedItemClickCallback?)
     fun setFeedItems(feedList: List<Channel.Item>) {
         if (mFeedList == null) {
             mFeedList = feedList
-            notifyItemRangeInserted(0, feedList.size)
+            notifyDataSetChanged()
         } else {
             val result = DiffUtil.calculateDiff(object : DiffUtil.Callback() {
                 override fun getOldListSize(): Int {
-                    return feedList.size
+                    return mFeedList!!.size
                 }
 
                 override fun getNewListSize(): Int {
@@ -39,13 +40,11 @@ class FeedItemAdapter(private val feedItemClickCallback: FeedItemClickCallback?)
                 }
 
                 override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-                    return feedList[oldItemPosition].guid === feedList[newItemPosition].guid
+                    return FeedUtil.areFeedItemsTheSame(mFeedList!![oldItemPosition], feedList[newItemPosition])
                 }
 
                 override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-                    val feedItem = feedList[newItemPosition]
-                    val old = feedList[oldItemPosition]
-                    return feedItem.toString() == old.toString()
+                    return FeedUtil.areFeedContentsTheSame(mFeedList!![oldItemPosition], feedList[newItemPosition])
                 }
             })
             mFeedList = feedList

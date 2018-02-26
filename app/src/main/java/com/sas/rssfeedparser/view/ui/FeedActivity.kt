@@ -18,25 +18,27 @@ class FeedActivity : AppCompatActivity(), HasSupportFragmentInjector {
     @Inject
     lateinit var dispatchingAndroidInjector: DispatchingAndroidInjector<Fragment>
 
+    lateinit var mFragment: FeedListFragment
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_feed)
 
         if (savedInstanceState == null) {
-            val fragment = FeedListFragment()
+            mFragment = FeedListFragment()
 
             supportFragmentManager.beginTransaction()
-                    .add(R.id.fragment_container, fragment, FeedListFragment.TAG).commit()
+                    .add(R.id.fragment_container, mFragment, FeedListFragment.TAG).commit()
         }
 
-        checkforInternetConnection()
+        checkInternetConnection()
     }
 
     override fun supportFragmentInjector(): DispatchingAndroidInjector<Fragment> {
         return dispatchingAndroidInjector
     }
 
-    private fun checkforInternetConnection() {
+    private fun checkInternetConnection() {
         if (!Util.isConnected(this))
             showConnectionAlertDialog()
     }

@@ -77,13 +77,15 @@ public class Channel {
 
         @Override
         public String toString() {
+            String thumbnailUrl = thumbnail != null ? thumbnail.url : "";
+            String contentUrl = content != null ? content.url : "";
+
             return "Item{" +
                     "title='" + title + '\'' +
                     ", link='" + link + '\'' +
-                    ", guid='" + guid + '\'' +
                     ", pubDate='" + pubDate + '\'' +
-                    ", thumbnail='" + thumbnail + '\'' +
-                    ", content='" + content + '\'' +
+                    ", thumbnail='" + thumbnailUrl + '\'' +
+                    ", content='" + contentUrl + '\'' +
                     '}';
         }
     }

@@ -8,6 +8,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v4.widget.ContentLoadingProgressBar
+import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
@@ -34,9 +35,12 @@ class FeedListFragment : Fragment(), FeedItemClickCallback, Injectable {
     }
 
     private lateinit var mRecyclerView: RecyclerView
+    private lateinit var mFeedSwipeRefresh: SwipeRefreshLayout
     private lateinit var mFeedItemAdapter: FeedItemAdapter
     private lateinit var mLoadingProgressBar: ContentLoadingProgressBar
     private lateinit var mEmptyText: TextView
+
+    lateinit var mViewModel: FeedItemListViewModel
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
@@ -44,10 +48,10 @@ class FeedListFragment : Fragment(), FeedItemClickCallback, Injectable {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        val viewModel: FeedItemListViewModel = ViewModelProviders.of(this,
+        mViewModel = ViewModelProviders.of(this,
                 viewModelFactory).get(FeedItemListViewModel::class.java)
 
-        observeViewModel(viewModel)
+        observeViewModel(mViewModel)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -57,6 +61,8 @@ class FeedListFragment : Fragment(), FeedItemClickCallback, Injectable {
         mRecyclerView = view.rv_feed_list
         mLoadingProgressBar = view.pb_feeds_loading
         mEmptyText = view.tv_empty_text
+
+        loadSwipeToRefresh(view)
 
         val layoutManager = LinearLayoutManager(context)
         layoutManager.orientation = LinearLayoutManager.VERTICAL
@@ -72,11 +78,12 @@ class FeedListFragment : Fragment(), FeedItemClickCallback, Injectable {
     }
 
     private fun observeViewModel(viewModel: FeedItemListViewModel) {
-        viewModel.feedItemListObservable.observe(this, Observer { rss ->
+        viewModel.feedItemListObservable.observe(this, Observer { it ->
             mLoadingProgressBar.hide()
+            mFeedSwipeRefresh.isRefreshing = false
 
-            if (rss != null) {
-                mFeedItemAdapter.setFeedItems(rss.channel.itemList)
+            if (it != null && it.isNotEmpty()) {
+                mFeedItemAdapter.setFeedItems(it)
                 showEmptyText(false)
             } else {
                 showEmptyText(true)
@@ -121,5 +128,10 @@ class FeedListFragment : Fragment(), FeedItemClickCallback, Injectable {
         } else {
             Toast.makeText(context, "No audio player apps found.", LENGTH_SHORT).show()
         }
+    }
+
+    protected fun loadSwipeToRefresh(view: View) {
+        mFeedSwipeRefresh = view.srl_feed_refresh
+        mFeedSwipeRefresh.setOnRefreshListener(SwipeRefreshLayout.OnRefreshListener { mViewModel.updateFeedItems() })
     }
 }
